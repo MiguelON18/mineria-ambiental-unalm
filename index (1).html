@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prevención y Control de la Contaminación Minera — UNALM</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--bg2:#111111;--bg3:#1a1a1a;--bg4:#222222;--green:#22c55e;--green2:#16a34a;--green-dim:#052e16;--blue:#3b82f6;--blue-dim:#0c1a35;--text:#f0f0f0;--text2:#9ca3af;--text3:#6b7280;--border:#2a2a2a;--border2:#333}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center}
+.nav-logo img{height:44px;object-fit:contain}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:8px;transition:all 0.2s}
+.nav-links a:hover{color:var(--green);background:var(--green-dim)}
+.nav-dropdown{position:relative}
+.nav-dropdown-btn{color:var(--text2);background:none;border:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+.nav-dropdown-btn:hover{color:var(--green);background:var(--green-dim)}
+.nav-dropdown-btn::after{content:'▾';font-size:10px;transition:transform 0.2s}
+.nav-dropdown-btn.open::after{transform:rotate(180deg)}
+.dropdown-menu{position:absolute;top:calc(100% + 8px);left:0;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;min-width:220px;padding:8px;display:none;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,0.6)}
+.dropdown-menu.open{display:block}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--text2);text-decoration:none;font-size:13px;transition:all 0.2s;cursor:pointer}
+.dropdown-item:hover{background:var(--green-dim);color:var(--green)}
+.dropdown-item .item-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);background:var(--green-dim);padding:2px 6px;border-radius:4px;flex-shrink:0}
+.dropdown-item .item-status{margin-left:auto;font-size:10px;padding:2px 8px;border-radius:10px}
+.status-done{background:#052e16;color:#22c55e}
+.status-pending{background:var(--bg3);color:var(--text3)}
+.dropdown-divider{border:none;border-top:1px solid var(--border);margin:6px 0}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 40px 60px;background:radial-gradient(ellipse at 50% 0%,#0d2818 0%,var(--bg) 60%);position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,#22c55e22 1px,transparent 1px);background-size:40px 40px;opacity:0.3}
+.hero-inner{position:relative;max-width:800px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-dim);border:1px solid #166534;color:var(--green);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:28px}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.1;margin-bottom:20px}
+.hero h1 span{color:var(--green)}
+.hero-sub{font-size:16px;color:var(--text2);margin-bottom:8px}
+.hero-univ{font-size:14px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:40px}
+.hero-stats{display:flex;justify-content:center;gap:48px}
+.hero-stat-n{font-size:32px;font-weight:700;color:var(--green)}
+.hero-stat-l{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+
+/* PROGRESS BAR */
+.progress-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:24px 40px}
+.progress-inner{max-width:1200px;margin:0 auto}
+.progress-label{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:12px;display:flex;justify-content:space-between}
+.progress-bar-wrap{background:var(--bg3);border-radius:8px;height:6px;overflow:hidden;margin-bottom:16px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#16a34a);border-radius:8px;width:25%;transition:width 1s ease}
+.progress-steps{display:flex;gap:12px;flex-wrap:wrap}
+.progress-step{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)}
+.progress-step.done{color:var(--green)}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.progress-step.done .step-dot{background:var(--green)}
+
+/* SECTIONS */
+section{padding:80px 40px;max-width:1200px;margin:0 auto}
+.section-label{font-size:11px;font-weight:600;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;font-family:'JetBrains Mono',monospace}
+.section-title{font-size:clamp(24px,3vw,36px);font-weight:700;margin-bottom:8px}
+.section-desc{font-size:15px;color:var(--text2);margin-bottom:48px;max-width:600px}
+.divider{border:none;border-top:1px solid var(--border);margin:0}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.project-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color 0.2s,transform 0.2s;position:relative;overflow:hidden}
+.project-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.project-card.done{border-color:#166534}
+.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
+.project-card.done::before{transform:scaleX(1)}
+.project-card:hover::before{transform:scaleX(1)}
+.project-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);margin-bottom:12px}
+.project-title{font-size:15px;font-weight:600;margin-bottom:8px}
+.project-desc{font-size:13px;color:var(--text2);line-height:1.5}
+.project-tag{display:inline-block;margin-top:14px;padding:3px 10px;background:var(--green-dim);color:var(--green);border-radius:6px;font-size:11px;font-weight:600}
+.project-tag.pending{background:var(--bg3);color:var(--text3)}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.tab-btn{padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:'Space Grotesk',sans-serif}
+.tab-btn:hover{border-color:var(--green);color:var(--green)}
+.tab-btn.active{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.yac-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:32px}
+.yac-card h3{font-size:22px;font-weight:700;color:var(--green);margin-bottom:16px}
+.yac-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+@media(max-width:600px){.yac-grid{grid-template-columns:1fr}}
+.yac-prop-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.yac-prop-val{font-size:14px;color:var(--text);line-height:1.6}
+.mineral-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.mineral-tag{padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;background:var(--bg3);color:var(--text2);border:1px solid var(--border2)}
+.mines-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mine-pill{padding:3px 10px;border-radius:20px;font-size:11px;background:var(--green-dim);color:var(--green);border:1px solid #166534}
+.ebook-section{margin-top:40px}
+.ebook-label{font-size:13px;color:var(--text2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ebook-label::before{content:'';display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%}
+.ebook-frame{width:100%;height:600px;border:1px solid var(--border);border-radius:12px;background:var(--bg2)}
+
+/* TABLE */
+.table-controls{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.search-input{padding:10px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color 0.2s}
+.search-input:focus{border-color:var(--green)}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px}
+.filter-btn{padding:5px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:'Space Grotesk',sans-serif}
+.filter-btn:hover{border-color:var(--green);color:var(--green)}
+.filter-btn.active{background:var(--green-dim);border-color:var(--green);color:var(--green);font-weight:600}
+.table-count{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--green-dim)}
+th{padding:12px 16px;text-align:left;color:#86efac;font-weight:600;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;border-bottom:1px solid #166534;white-space:nowrap}
+td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg3)}
+.type-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-porfido{background:#166534;color:#86efac}
+.badge-skarn{background:#0c1a35;color:#93c5fd}
+.badge-epitermal{background:#78350f;color:#fcd34d}
+.badge-polimetalico{background:#3b0764;color:#d8b4fe}
+.badge-iocg{background:#831843;color:#f9a8d4}
+.badge-vetas{background:#1c3d1c;color:#86efac}
+.min-tags{display:flex;flex-wrap:wrap;gap:3px}
+.min-tag{padding:1px 6px;border-radius:4px;font-size:10px;background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+
+/* COMPARISON */
+.comparison-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.comp-stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.comp-stat-n{font-size:36px;font-weight:700}
+.comp-stat-l{font-size:13px;color:var(--text2);margin-top:4px}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.comparison-grid{grid-template-columns:1fr}.comparison-stats{grid-template-columns:1fr}}
+.comp-card{border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.comp-header{padding:20px 24px}
+.comp-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.comp-subtitle{font-size:12px;opacity:0.8}
+.comp-body{background:var(--bg2)}
+.mine-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.mine-row:last-child{border-bottom:none}
+.mine-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.mine-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.mine-region{font-size:11px;color:var(--text3);margin-bottom:4px}
+.mine-minerals{display:flex;flex-wrap:wrap;gap:3px}
+.m-tag{font-size:10px;padding:1px 6px;border-radius:4px;background:var(--bg3);color:var(--text2);border:1px solid var(--border);font-weight:500}
+.comp-note{margin-top:20px;padding:14px 18px;background:var(--bg2);border-radius:10px;border-left:3px solid var(--border2);font-size:12px;color:var(--text2);line-height:1.6}
+
+/* MAP */
+.map-placeholder{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:60px 40px;text-align:center}
+.map-icon{font-size:48px;margin-bottom:16px}
+.map-badge{display:inline-block;margin-top:16px;padding:6px 16px;background:#0c1a35;border:1px solid #1d4ed8;color:#93c5fd;border-radius:20px;font-size:12px;font-weight:600}
+
+/* RECURSOS */
+.recursos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.recurso-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;transition:border-color 0.2s,transform 0.2s;text-decoration:none;display:block}
+.recurso-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.recurso-icon{font-size:28px;margin-bottom:12px}
+.recurso-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px}
+.recurso-desc{font-size:13px;color:var(--text2);line-height:1.5}
+.recurso-tag{display:inline-block;margin-top:12px;padding:2px 10px;border-radius:6px;font-size:11px;font-weight:600;background:var(--blue-dim);color:#93c5fd;border:1px solid #1d4ed8}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.team-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;transition:border-color 0.2s,transform 0.2s}
+.team-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.avatar{width:64px;height:64px;border-radius:50%;background:var(--green-dim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;font-weight:700;color:var(--green)}
+.team-name{font-size:14px;font-weight:600;margin-bottom:4px}
+.team-code{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 40px}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+@media(max-width:700px){.footer-inner{grid-template-columns:1fr}}
+.footer-brand-img{height:48px;object-fit:contain;margin-bottom:12px;display:block}
+.footer-brand p{font-size:13px;color:var(--text3);line-height:1.6}
+.footer-col h4{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em}
+.footer-col a{display:block;font-size:13px;color:var(--text3);text-decoration:none;margin-bottom:8px;transition:color 0.2s}
+.footer-col a:hover{color:var(--green)}
+.footer-bottom{max-width:1200px;margin:32px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:12px;color:var(--text3)}
+.footer-bottom span{font-size:12px;color:var(--green);font-family:'JetBrains Mono',monospace}
+
+/* BACK TO TOP */
+.back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green-dim);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--green);font-size:18px;opacity:0;transition:opacity 0.3s;z-index:50;text-decoration:none}
+.back-top.visible{opacity:1}
+.back-top:hover{background:var(--green);color:#000}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img id="nav-logo" src="" alt="UNALM">
+  </div>
+  <div class="nav-links">
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" id="proyectosBtn" onclick="toggleDropdown()">Proyectos</button>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <a class="dropdown-item" href="#proyectos">
+          <span class="item-num">T1</span>
+          Yacimientos Minerales en el Perú
+          <span class="item-status status-done">✓ Listo</span>
+        </a>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item" style="opacity:0.4;cursor:default">
+          <span class="item-num" style="background:var(--bg3);color:var(--text3)">T2</span>
+          Próximo trabajo
+          <span class="item-status status-pending">Pendiente</span>
+        </div>
+        <div class="dropdown-item" style="opacity:0.4;cursor:default">
+          <span class="item-num" style="background:var(--bg3);color:var(--text3)">T3</span>
+          Próximo trabajo
+          <span class="item-status status-pending">Pendiente</span>
+        </div>
+      </div>
+    </div>
+    <a href="#yacimientos">Yacimientos</a>
+    <a href="#tabla">Tabla</a>
+    <a href="#metodos">Métodos</a>
+    <a href="#mapa">Mapa</a>
+    <a href="#recursos">Recursos</a>
+    <a href="#equipo">Equipo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Ingeniería Ambiental · UNALM · Facultad de Ciencias</div>
+    <h1>Prevención y Control de la <span>Contaminación Minera</span></h1>
+    <p class="hero-sub">Trabajo Grupal — Yacimientos Minerales en el Perú</p>
+    <p class="hero-univ">Universidad Nacional Agraria La Molina</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-n">4</div><div class="hero-stat-l">Tipos de yacimientos</div></div>
+      <div class="hero-stat"><div class="hero-stat-n">27</div><div class="hero-stat-l">Minas analizadas</div></div>
+      <div class="hero-stat"><div class="hero-stat-n">5</div><div class="hero-stat-l">Integrantes</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-inner">
+    <div class="progress-label">
+      <span>// Progreso del curso</span>
+      <span>1 de 4 entregas completadas</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
+    <div class="progress-steps">
+      <div class="progress-step done"><div class="step-dot"></div>T1: Yacimientos Minerales</div>
+      <div class="progress-step"><div class="step-dot"></div>T2: Por definir</div>
+      <div class="progress-step"><div class="step-dot"></div>T3: Por definir</div>
+      <div class="progress-step"><div class="step-dot"></div>T4: Por definir</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="proyectos">
+  <div class="section-label">// Trabajo 1</div>
+  <div class="section-title">Yacimientos Minerales en el Perú</div>
+  <p class="section-desc">Cuatro secciones que conforman el primer trabajo grupal del curso.</p>
+  <div class="projects-grid">
+    <div class="project-card done">
+      <div class="project-num">PUNTO 01</div>
+      <div class="project-title">Características de los Yacimientos</div>
+      <div class="project-desc">Skarn, Epitermal, Pórfidos y Sulfuros Polimetálicos — tipos, minerales y minas representativas.</div>
+      <span class="project-tag">Completado</span>
+    </div>
+    <div class="project-card done">
+      <div class="project-num">PUNTO 02</div>
+      <div class="project-title">Tipos de Yacimientos en Minas del Perú</div>
+      <div class="project-desc">Tabla interactiva con 27 minas clasificadas por región, tipo de yacimiento y minerales.</div>
+      <span class="project-tag">Completado</span>
+    </div>
+    <div class="project-card done">
+      <div class="project-num">PUNTO 03</div>
+      <div class="project-title">Minería Subterránea y Tajo Abierto</div>
+      <div class="project-desc">Minerales explotados según método de extracción en minas peruanas.</div>
+      <span class="project-tag">Completado</span>
+    </div>
+    <div class="project-card">
+      <div class="project-num">PUNTO 04</div>
+      <div class="project-title">Mapa de Minas Importantes del Perú</div>
+      <div class="project-desc">Mapa interactivo en ArcGIS con ubicación, yacimiento y minerales de cada mina.</div>
+      <span class="project-tag pending">En proceso</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- YACIMIENTOS -->
+<section id="yacimientos">
+  <div class="section-label">// Punto 01</div>
+  <div class="section-title">Tipos de Yacimientos Minerales</div>
+  <p class="section-desc">Características geológicas, mineralogía y minas representativas de cada tipo.</p>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('skarn',this)">Skarn</button>
+    <button class="tab-btn" onclick="showTab('epitermal',this)">Epitermal</button>
+    <button class="tab-btn" onclick="showTab('porfido',this)">Pórfidos</button>
+    <button class="tab-btn" onclick="showTab('sulfuros',this)">Sulfuros Polimetálicos</button>
+  </div>
+  <div id="tab-skarn" class="tab-content active">
+    <div class="yac-card">
+      <h3>Skarn</h3>
+      <div class="yac-grid">
+        <div><div class="yac-prop-label">Origen</div><div class="yac-prop-val">Metasomatismo de contacto entre intrusivos y rocas carbonatadas (calizas). Formación de silicatos de Ca-Mg-Fe.</div></div>
+        <div><div class="yac-prop-label">Profundidad</div><div class="yac-prop-val">Media a profunda. Asociados a zonas de contacto intrusivo-caliza.</div></div>
+        <div><div class="yac-prop-label">Riesgo ambiental</div><div class="yac-prop-val">Menor riesgo de drenaje ácido por neutralización natural de carbonatos (CaCO₃).</div></div>
+        <div><div class="yac-prop-label">Método de explotación</div><div class="yac-prop-val">Principalmente tajo abierto para grandes depósitos; subterráneo en casos de alta ley.</div></div>
+      </div>
+      <div class="yac-prop-label">Minerales típicos</div>
+      <div class="mineral-tags"><span class="mineral-tag">Cu</span><span class="mineral-tag">Zn</span><span class="mineral-tag">Pb</span><span class="mineral-tag">Fe</span><span class="mineral-tag">Ag</span><span class="mineral-tag">Magnetita</span><span class="mineral-tag">Calcopirita</span><span class="mineral-tag">Esfalerita</span><span class="mineral-tag">Galena</span></div>
+      <div style="margin-top:20px"><div class="yac-prop-label">Minas representativas en Perú</div>
+      <div class="mines-list"><span class="mine-pill">Antamina (Áncash)</span><span class="mine-pill">Las Bambas (Apurímac)</span><span class="mine-pill">Marcona (Ica)</span><span class="mine-pill">Raura (Lima)</span><span class="mine-pill">Yauricocha (Lima)</span></div></div>
+    </div>
+  </div>
+  <div id="tab-epitermal" class="tab-content">
+    <div class="yac-card">
+      <h3>Epitermal</h3>
+      <div class="yac-grid">
+        <div><div class="yac-prop-label">Origen</div><div class="yac-prop-val">Formados a baja profundidad (&lt;2 km) y baja temperatura (&lt;320°C). Fuerte control estructural en vetas o cuerpos.</div></div>
+        <div><div class="yac-prop-label">Subtipos</div><div class="yac-prop-val"><strong>Alta sulfuración:</strong> gangas ácidas, As y Sb.<br><strong>Baja sulfuración:</strong> ambiente neutro, menor toxicidad.</div></div>
+        <div><div class="yac-prop-label">Riesgo ambiental</div><div class="yac-prop-val">Alta sulfuración: Arsénico (As) y Antimonio (Sb) — metales tóxicos críticos que requieren gestión rigurosa de lixiviados.</div></div>
+        <div><div class="yac-prop-label">Método de explotación</div><div class="yac-prop-val">Tajo abierto en grandes depósitos (Yanacocha). Subterráneo en vetas de alta ley (Poderosa).</div></div>
+      </div>
+      <div class="yac-prop-label">Minerales típicos</div>
+      <div class="mineral-tags"><span class="mineral-tag">Au</span><span class="mineral-tag">Ag</span><span class="mineral-tag">Enargita</span><span class="mineral-tag">Electrum</span><span class="mineral-tag">Argentita</span><span class="mineral-tag">Sulfosales</span></div>
+      <div style="margin-top:20px"><div class="yac-prop-label">Minas representativas en Perú</div>
+      <div class="mines-list"><span class="mine-pill">Yanacocha (Cajamarca)</span><span class="mine-pill">Lagunas Norte (La Libertad)</span><span class="mine-pill">Orcopampa (Arequipa)</span><span class="mine-pill">Inmaculada (Ayacucho)</span></div></div>
+    </div>
+  </div>
+  <div id="tab-porfido" class="tab-content">
+    <div class="yac-card">
+      <h3>Pórfidos</h3>
+      <div class="yac-grid">
+        <div><div class="yac-prop-label">Origen</div><div class="yac-prop-val">Sistemas de gran tonelaje y baja ley asociados a intrusivos calcoalcalinos. Mineralización en stockwork y diseminada.</div></div>
+        <div><div class="yac-prop-label">Características</div><div class="yac-prop-val">Los más grandes del mundo. Baja ley pero enormes volúmenes. Económicamente los más importantes del Perú.</div></div>
+        <div><div class="yac-prop-label">Riesgo ambiental</div><div class="yac-prop-val">Alto potencial de DAM por oxidación de pirita. Presencia de Mo y As en zonas de sobreimpresión.</div></div>
+        <div><div class="yac-prop-label">Método de explotación</div><div class="yac-prop-val">Exclusivamente tajo abierto. Generan grandes volúmenes de desmonte y requieren gestión masiva de aguas.</div></div>
+      </div>
+      <div class="yac-prop-label">Minerales típicos</div>
+      <div class="mineral-tags"><span class="mineral-tag">Cu</span><span class="mineral-tag">Mo</span><span class="mineral-tag">Au</span><span class="mineral-tag">Calcopirita</span><span class="mineral-tag">Bornita</span><span class="mineral-tag">Molibdenita</span><span class="mineral-tag">Pirita</span></div>
+      <div style="margin-top:20px"><div class="yac-prop-label">Minas representativas en Perú</div>
+      <div class="mines-list"><span class="mine-pill">Quellaveco (Moquegua)</span><span class="mine-pill">Cerro Verde (Arequipa)</span><span class="mine-pill">Toquepala (Tacna)</span><span class="mine-pill">Cuajone (Moquegua)</span><span class="mine-pill">Toromocho (Junín)</span></div></div>
+    </div>
+  </div>
+  <div id="tab-sulfuros" class="tab-content">
+    <div class="yac-card">
+      <h3>Sulfuros Polimetálicos</h3>
+      <div class="yac-grid">
+        <div><div class="yac-prop-label">Origen</div><div class="yac-prop-val">Sistemas complejos de vetas y reemplazos en calizas. Alta ley con paragénesis múltiple.</div></div>
+        <div><div class="yac-prop-label">Características</div><div class="yac-prop-val">Múltiples metales valiosos en un mismo yacimiento. Requieren flotación selectiva para separar concentrados.</div></div>
+        <div><div class="yac-prop-label">Riesgo ambiental</div><div class="yac-prop-val">Alta carga de metales base en efluentes (Zn, Pb, Cd). Requieren reactivos de flotación con control estricto.</div></div>
+        <div><div class="yac-prop-label">Método de explotación</div><div class="yac-prop-val">Principalmente subterráneo. Menor volumen de residuos superficiales pero riesgo en aguas profundas.</div></div>
+      </div>
+      <div class="yac-prop-label">Minerales típicos</div>
+      <div class="mineral-tags"><span class="mineral-tag">Zn</span><span class="mineral-tag">Pb</span><span class="mineral-tag">Ag</span><span class="mineral-tag">Cu</span><span class="mineral-tag">Au</span><span class="mineral-tag">Esfalerita</span><span class="mineral-tag">Galena</span><span class="mineral-tag">Pirita</span><span class="mineral-tag">Calcopirita</span></div>
+      <div style="margin-top:20px"><div class="yac-prop-label">Minas representativas en Perú</div>
+      <div class="mines-list"><span class="mine-pill">Cerro Lindo (Ica)</span><span class="mine-pill">Casapalca (Lima)</span><span class="mine-pill">Atacocha (Pasco)</span><span class="mine-pill">Chungar (Pasco)</span><span class="mine-pill">Uchucchacua (Lima)</span></div></div>
+    </div>
+  </div>
+  <div class="ebook-section">
+    <div class="ebook-label">Presentación interactiva — Yacimientos Minerales: Tesoros Geológicos de la Tierra</div>
+    <iframe class="ebook-frame" src="https://gamma.app/embed/san6g4b20ihc8qp" allowfullscreen></iframe>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TABLA -->
+<section id="tabla">
+  <div class="section-label">// Punto 02</div>
+  <div class="section-title">Yacimientos que explotan las minas del Perú</div>
+  <p class="section-desc">27 unidades mineras clasificadas por región, tipo de yacimiento y minerales principales.</p>
+  <div class="table-controls">
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar por mina, región o mineral..." oninput="filterTable()">
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="setFilter('Pórfido',this)">Pórfido</button>
+      <button class="filter-btn" onclick="setFilter('Skarn',this)">Skarn</button>
+      <button class="filter-btn" onclick="setFilter('Epitermal',this)">Epitermal</button>
+      <button class="filter-btn" onclick="setFilter('Polimetálico',this)">Polimetálico</button>
+      <button class="filter-btn" onclick="setFilter('IOCG',this)">IOCG</button>
+      <button class="filter-btn" onclick="setFilter('Vetas',this)">Vetas</button>
+    </div>
+    <div class="table-count" id="tableCount">27 minas</div>
+  </div>
+  <div class="table-wrap">
+    <table id="minaTable">
+      <thead><tr><th>Mina</th><th>Región</th><th>Tipo de yacimiento</th><th>Minerales principales</th></tr></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- METODOS -->
+<section id="metodos">
+  <div class="section-label">// Punto 03</div>
+  <div class="section-title">Métodos de Explotación Minera en el Perú</div>
+  <p class="section-desc">Minerales que explotan las minas según su método de extracción.</p>
+  <div class="comparison-stats">
+    <div class="comp-stat"><div class="comp-stat-n" style="color:var(--green)">9</div><div class="comp-stat-l">Minas subterráneas analizadas</div></div>
+    <div class="comp-stat"><div class="comp-stat-n" style="color:var(--blue)">9</div><div class="comp-stat-l">Minas a tajo abierto analizadas</div></div>
+  </div>
+  <div class="comparison-grid">
+    <div class="comp-card">
+      <div class="comp-header" style="background:#052e16"><div class="comp-title" style="color:var(--green)">Minería Subterránea</div><div class="comp-subtitle" style="color:#86efac">Alta ley · menor volumen superficial · riesgo en aguas profundas</div></div>
+      <div class="comp-body" id="subterranea-list"></div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-header" style="background:#0c1a35"><div class="comp-title" style="color:var(--blue)">Minería a Tajo Abierto</div><div class="comp-subtitle" style="color:#93c5fd">Gran tonelaje · gestión masiva de aguas y polvos</div></div>
+      <div class="comp-body" id="tajo-list"></div>
+    </div>
+  </div>
+  <div class="comp-note"><strong>Nota técnica:</strong> La minería subterránea genera menor volumen de residuos superficiales pero concentra el riesgo en el manejo de aguas de mina profundas y estabilidad de labores. La minería a tajo abierto genera grandes volúmenes de desmonte y requiere gestión masiva de polvos, aguas de contacto y relaves. Fuente: Informe Yacimientos Mineros Perú 2024-2025.</div>
+</section>
+
+<hr class="divider">
+
+<!-- MAPA -->
+<section id="mapa">
+  <div class="section-label">// Punto 04</div>
+  <div class="section-title">Mapa de Minas Importantes del Perú</div>
+  <p class="section-desc">Ubicación georreferenciada con nombre, yacimiento y minerales de cada mina principal.</p>
+  <div class="map-placeholder" id="mapContainer">
+    <div class="map-icon">🗺️</div>
+    <h3 style="font-size:20px;font-weight:600;margin-bottom:8px">Mapa ArcGIS — En proceso</h3>
+    <p style="color:var(--text2);font-size:14px">El mapa interactivo será embebido aquí cuando esté publicado en ArcGIS Online.</p>
+    <span class="map-badge">ArcGIS Online · Próximamente</span>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- RECURSOS -->
+<section id="recursos">
+  <div class="section-label">// Recursos</div>
+  <div class="section-title">Fuentes y Recursos de Referencia</div>
+  <p class="section-desc">Instituciones, bases de datos y herramientas de consulta para minería ambiental en el Perú.</p>
+  <div class="recursos-grid">
+    <a class="recurso-card" href="https://www.gob.pe/ingemmet" target="_blank">
+      <div class="recurso-icon">🪨</div>
+      <div class="recurso-title">INGEMMET</div>
+      <div class="recurso-desc">Instituto Geológico Minero y Metalúrgico del Perú. Catastro minero, geología y recursos minerales.</div>
+      <span class="recurso-tag">Institución oficial</span>
+    </a>
+    <a class="recurso-card" href="https://www.minem.gob.pe" target="_blank">
+      <div class="recurso-icon">⛏️</div>
+      <div class="recurso-title">MINEM Perú</div>
+      <div class="recurso-desc">Ministerio de Energía y Minas. Estadísticas, normativa y reportes del sector minero peruano.</div>
+      <span class="recurso-tag">Institución oficial</span>
+    </a>
+    <a class="recurso-card" href="https://gamma.app/docs/Yacimientos-Minerales-Tesoros-Geologicos-de-la-Tierra-san6g4b20ihc8qp" target="_blank">
+      <div class="recurso-icon">📖</div>
+      <div class="recurso-title">Ebook — Yacimientos Minerales</div>
+      <div class="recurso-desc">Presentación interactiva elaborada por el grupo sobre tipos de yacimientos y sus características.</div>
+      <span class="recurso-tag">Recurso del grupo</span>
+    </a>
+    <a class="recurso-card" href="https://www.oefa.gob.pe" target="_blank">
+      <div class="recurso-icon">🌿</div>
+      <div class="recurso-title">OEFA</div>
+      <div class="recurso-desc">Organismo de Evaluación y Fiscalización Ambiental. Supervisión y control ambiental en minería.</div>
+      <span class="recurso-tag">Institución oficial</span>
+    </a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TEAM -->
+<section id="equipo">
+  <div class="section-label">// Grupo</div>
+  <div class="section-title">Integrantes del Grupo</div>
+  <p class="section-desc">Prevención y Control de la Contaminación Minera — Facultad de Ciencias, UNALM</p>
+  <div class="team-grid" id="teamGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img id="footer-logo" class="footer-brand-img" src="" alt="UNALM">
+      <p>Universidad Nacional Agraria La Molina<br>Facultad de Ciencias<br>Prevención y Control de la Contaminación Minera</p>
+    </div>
+    <div class="footer-col">
+      <h4>Secciones</h4>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#yacimientos">Yacimientos</a>
+      <a href="#tabla">Tabla de minas</a>
+      <a href="#metodos">Métodos</a>
+      <a href="#mapa">Mapa ArcGIS</a>
+      <a href="#recursos">Recursos</a>
+    </div>
+    <div class="footer-col">
+      <h4>Referencias</h4>
+      <a href="https://gamma.app/docs/Yacimientos-Minerales-Tesoros-Geologicos-de-la-Tierra-san6g4b20ihc8qp" target="_blank">Ebook Gamma</a>
+      <a href="https://www.minem.gob.pe" target="_blank">MINEM Perú</a>
+      <a href="https://www.gob.pe/ingemmet" target="_blank">INGEMMET</a>
+      <a href="https://www.oefa.gob.pe" target="_blank">OEFA</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© Grupo Minería Ambiental — UNALM</p>
+    <span>Facultad de Ciencias · Ingeniería Ambiental</span>
+  </div>
+</footer>
+
+<a class="back-top" id="backTop" href="#" title="Volver arriba">↑</a>
+
+<script>
+const logoB64='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lKgpJIIOwR6K3G0cVuJtpYEe3cQMnjspGktJujxQkepJVofmrTaUGx5Nnmb5M0pnIsuvt1ZJBLMue6630/ilWh+itcpSgzbNd7rZZhmWa5zbbJKCgvRH1NL5T4jmSQddB09Vez9sLPv4cZN+tX/8VazSg2b7YWffw4yb9av/AOKv5ez7O3mltO5rkjja0lK0KujxCgfEEc3UVrdKD0bHfb3YnXHbJebja3HUhLi4clbJWB6CUkbFZ83OM1nRHYc3L8gkxnkFDrL1yeWhaT4hSSrRHqNa/SgyrXcbhap7c+1zpUGY1vu34zqm3EbBB0pJBGwSPyE17T2fZ280tp3NckcbWkpWhV0eIUD4gjm6itbpQK9ax5LkdiacasmQXa1tuqCnEQ5jjIWR02QkjZryaUHs3nK8pvUQQ7zkt5uUYLCwzLnOuo5h4HlUojfU9fXWUxnucx2G2GMzyNpptIQhCLo8lKUgaAACugA9Fa5Sgz73ebvfJSZd6us65yEIDaXZchby0oBJCQVEnWyTr1msClKD3rbmmY2yC1BtuWX6FEaBDbEe4uttoG99EpUAOpJrGvmSZFfUNN3y/XW6IZJLSZkxx4IJ8SOYnXh6K8qlApSlBJ3D3j1xVwdLTFoyyXIgtgJTCuH+kshP71IXsoH8gpqeMY7W2IZMY8TivgDBW2ChM6AgPISFa5h3azzpSdAkBat6HQ6qnNKDqDY73E4gtCdwm4qWuPBTCEZVv+LUP/AkdAFttBbS2l6AA70OJHoSOoMhYdYIOK4pasbtnemFbIjcVguq5llKEhIKj6SdbPhXIizXW52W5s3Oz3CVb5zCuZqRGdU24g/WFJIIq1vArtg3KC8xZeKTRnwjpCbxGaAfa+outp6LHrSAr1KNBdIWi1C8G8C2wxci2WzLDKe95DraefW9ean9A+qsLNsat2W41LsVzDiWn0gtvNK5XY7qSFNutq8UrQoJUD9aRXyk5picfDDmb2QW9OPBjv8A4eHQWij1EeJ9HKOu+mt9Ko52hu1TkWYvSLFgbsmwY/1QuSk8kyYPA7UP9Wg/vU9T6T15QE0XrKeEfCrI4WU5zk3xzxIjh0XL4mJcVLWUqQkutb7tBQ2oJTzFCgDrqK0bKu2lCRPfm4jw8bE51pLBnXOSOYtoKlISUNjZAK1HXP6TVOySTsnZNflBKfEntA8VM8adiXXJHIVud+VBtqfg7RH1Ep89Y9SlKqLKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoM1V3uqrImxm5zDa0vmSmEX1dwHSOUucm+Xm103reqwqUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoFKUoP/9k=';
+document.getElementById('nav-logo').src='data:image/png;base64,'+logoB64;
+document.getElementById('footer-logo').src='data:image/png;base64,'+logoB64;
+
+function toggleDropdown(){
+  const btn=document.getElementById('proyectosBtn');
+  const menu=document.getElementById('dropdownMenu');
+  btn.classList.toggle('open');
+  menu.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.nav-dropdown')){
+    document.getElementById('proyectosBtn').classList.remove('open');
+    document.getElementById('dropdownMenu').classList.remove('open');
+  }
+});
+
+function showTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const minas=[
+  {mina:"Quellaveco",region:"Moquegua",tipo:"Pórfido",cat:"Pórfido",min:["Cu","Mo"]},
+  {mina:"Cerro Verde",region:"Arequipa",tipo:"Pórfido",cat:"Pórfido",min:["Cu","Mo","Ag"]},
+  {mina:"Toquepala",region:"Tacna",tipo:"Pórfido",cat:"Pórfido",min:["Cu","Mo"]},
+  {mina:"Cuajone",region:"Moquegua",tipo:"Pórfido",cat:"Pórfido",min:["Cu","Mo"]},
+  {mina:"Toromocho",region:"Junín",tipo:"Pórfido",cat:"Pórfido",min:["Cu","Mo","Ag"]},
+  {mina:"Cerro Corona",region:"Cajamarca",tipo:"Pórfido Cu-Au",cat:"Pórfido",min:["Cu","Au"]},
+  {mina:"Antamina",region:"Áncash",tipo:"Skarn / Polimetálico",cat:"Skarn",min:["Cu","Zn","Ag","Pb","Mo"]},
+  {mina:"Las Bambas",region:"Apurímac",tipo:"Skarn / Pórfido",cat:"Skarn",min:["Cu","Mo","Au","Ag"]},
+  {mina:"Marcona",region:"Ica",tipo:"Skarn de magnetita",cat:"Skarn",min:["Fe"]},
+  {mina:"Antapaccay",region:"Cusco",tipo:"Skarn / Pórfido",cat:"Skarn",min:["Cu","Au","Ag"]},
+  {mina:"Constancia",region:"Cusco",tipo:"Pórfido / Skarn",cat:"Skarn",min:["Cu","Mo","Ag","Au"]},
+  {mina:"Yauricocha",region:"Lima",tipo:"Skarn / Polimetálico",cat:"Skarn",min:["Cu","Zn","Pb","Ag","Au"]},
+  {mina:"Raura",region:"Lima",tipo:"Skarn / Polimetálico",cat:"Skarn",min:["Pb","Zn","Cu","Ag"]},
+  {mina:"Yanacocha",region:"Cajamarca",tipo:"Epitermal alta sulf.",cat:"Epitermal",min:["Au","Ag","Cu"]},
+  {mina:"Lagunas Norte",region:"La Libertad",tipo:"Epitermal alta sulf.",cat:"Epitermal",min:["Au","Ag"]},
+  {mina:"Orcopampa",region:"Arequipa",tipo:"Epitermal baja sulf.",cat:"Epitermal",min:["Au","Ag"]},
+  {mina:"Inmaculada",region:"Ayacucho",tipo:"Epitermal baja sulf.",cat:"Epitermal",min:["Au","Ag"]},
+  {mina:"Cerro Lindo",region:"Ica",tipo:"VMS Sulfuros masivos",cat:"Polimetálico",min:["Zn","Cu","Pb","Ag"]},
+  {mina:"Uchucchacua",region:"Lima",tipo:"Polimetálico",cat:"Polimetálico",min:["Ag","Pb","Zn"]},
+  {mina:"Atacocha",region:"Pasco",tipo:"Skarn / Polimetálico",cat:"Polimetálico",min:["Zn","Pb","Ag","Cu"]},
+  {mina:"Chungar",region:"Pasco",tipo:"Polimetálico",cat:"Polimetálico",min:["Zn","Pb","Ag","Cu"]},
+  {mina:"Casapalca",region:"Lima",tipo:"Polimetálico",cat:"Polimetálico",min:["Ag","Cu","Zn","Pb"]},
+  {mina:"Mina Justa",region:"Ica",tipo:"IOCG",cat:"IOCG",min:["Cu","Ag"]},
+  {mina:"Condestable",region:"Lima",tipo:"IOCG",cat:"IOCG",min:["Cu","Au","Ag"]},
+  {mina:"Poderosa",region:"La Libertad",tipo:"Vetas orogénicas",cat:"Vetas",min:["Au","Ag"]},
+  {mina:"Retamas",region:"La Libertad",tipo:"Vetas orogénicas",cat:"Vetas",min:["Au","Ag"]},
+  {mina:"San Rafael",region:"Puno",tipo:"Vetas magmático",cat:"Vetas",min:["Sn","Cu"]},
+];
+const badgeClass={Pórfido:"badge-porfido",Skarn:"badge-skarn",Epitermal:"badge-epitermal",Polimetálico:"badge-polimetalico",IOCG:"badge-iocg",Vetas:"badge-vetas"};
+let activeFilter="todos";
+function renderTable(){
+  const q=document.getElementById("searchInput").value.toLowerCase();
+  const filtered=minas.filter(r=>{
+    const matchCat=activeFilter==="todos"||r.cat===activeFilter;
+    const matchQ=!q||r.mina.toLowerCase().includes(q)||r.region.toLowerCase().includes(q)||r.min.join(" ").toLowerCase().includes(q);
+    return matchCat&&matchQ;
+  });
+  document.getElementById("tableCount").textContent=filtered.length+" mina"+(filtered.length!==1?"s":"");
+  document.getElementById("tableBody").innerHTML=filtered.length===0
+    ?'<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text3)">Sin resultados</td></tr>'
+    :filtered.map(r=>`<tr><td style="font-weight:600">${r.mina}</td><td style="color:var(--text2)">${r.region}</td><td><span class="type-badge ${badgeClass[r.cat]||""}">${r.tipo}</span></td><td><div class="min-tags">${r.min.map(m=>`<span class="min-tag">${m}</span>`).join("")}</div></td></tr>`).join("");
+}
+function filterTable(){renderTable()}
+function setFilter(cat,btn){
+  activeFilter=cat;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderTable();
+}
+renderTable();
+
+const sub=[
+  {n:"Poderosa",r:"La Libertad",m:["Au","Ag"]},
+  {n:"Casapalca",r:"Lima",m:["Ag","Cu","Zn","Pb"]},
+  {n:"Atacocha",r:"Pasco",m:["Zn","Pb","Ag","Cu"]},
+  {n:"Chungar",r:"Pasco",m:["Zn","Pb","Ag","Cu"]},
+  {n:"Uchucchacua",r:"Lima",m:["Ag","Pb","Zn"]},
+  {n:"San Rafael",r:"Puno",m:["Sn","Cu"]},
+  {n:"Inmaculada",r:"Ayacucho",m:["Au","Ag"]},
+  {n:"Yauricocha",r:"Lima",m:["Cu","Zn","Pb","Ag"]},
+  {n:"Raura",r:"Lima",m:["Pb","Zn","Cu","Ag"]},
+];
+const tajo=[
+  {n:"Cerro Verde",r:"Arequipa",m:["Cu","Mo","Ag"]},
+  {n:"Quellaveco",r:"Moquegua",m:["Cu","Mo"]},
+  {n:"Antamina",r:"Áncash",m:["Cu","Zn","Ag","Pb"]},
+  {n:"Las Bambas",r:"Apurímac",m:["Cu","Mo","Au","Ag"]},
+  {n:"Toquepala",r:"Tacna",m:["Cu","Mo"]},
+  {n:"Cuajone",r:"Moquegua",m:["Cu","Mo"]},
+  {n:"Yanacocha",r:"Cajamarca",m:["Au","Ag","Cu"]},
+  {n:"Lagunas Norte",r:"La Libertad",m:["Au","Ag"]},
+  {n:"Marcona",r:"Ica",m:["Fe"]},
+];
+function mineRow(mine,color){
+  return`<div class="mine-row"><div class="mine-dot" style="background:${color}"></div><div><div class="mine-name">${mine.n}</div><div class="mine-region">${mine.r}</div><div class="mine-minerals">${mine.m.map(t=>`<span class="m-tag">${t}</span>`).join("")}</div></div></div>`;
+}
+document.getElementById("subterranea-list").innerHTML=sub.map(m=>mineRow(m,"#22c55e")).join("");
+document.getElementById("tajo-list").innerHTML=tajo.map(m=>mineRow(m,"#3b82f6")).join("");
+
+const team=[
+  {name:"Analy Avalos Quispe",code:"20220666"},
+  {name:"Brenda Soto Zelada",code:"20220682"},
+  {name:"Alexandra Rodríguez Navarro",code:"20220681"},
+  {name:"Bertha Reyna Medina",code:"20220680"},
+  {name:"Jhoreck Miguel Llanto Atoccsa",code:"20210699"},
+];
+document.getElementById("teamGrid").innerHTML=team.map(m=>{
+  const initials=m.name.split(" ").slice(0,2).map(w=>w[0]).join("");
+  return`<div class="team-card"><div class="avatar">${initials}</div><div class="team-name">${m.name}</div><div class="team-code">${m.code}</div></div>`;
+}).join("");
+
+window.addEventListener('scroll',function(){
+  const btn=document.getElementById('backTop');
+  if(window.scrollY>400)btn.classList.add('visible');
+  else btn.classList.remove('visible');
+});
+</script>
+</body>
+</html>
