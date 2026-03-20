@@ -53,7 +53,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,8,0.95);
 .progress-inner{max-width:1200px;margin:0 auto}
 .progress-label{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:12px;display:flex;justify-content:space-between}
 .progress-bar-wrap{background:var(--bg3);border-radius:8px;height:6px;overflow:hidden;margin-bottom:16px}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#16a34a);border-radius:8px;width:25%;transition:width 1s ease}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#16a34a);border-radius:8px;width:100%;transition:width 1s ease}
 .progress-steps{display:flex;gap:12px;flex-wrap:wrap}
 .progress-step{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)}
 .progress-step.done{color:var(--green)}
@@ -249,14 +249,14 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 40p
   <div class="progress-inner">
     <div class="progress-label">
       <span>// Progreso del curso</span>
-      <span>1 de 4 entregas completadas</span>
+      <span>4 de 4 entregas completadas</span>
     </div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
     <div class="progress-steps">
       <div class="progress-step done"><div class="step-dot"></div>T1: Yacimientos Minerales</div>
-      <div class="progress-step"><div class="step-dot"></div>T2: Por definir</div>
-      <div class="progress-step"><div class="step-dot"></div>T3: Por definir</div>
-      <div class="progress-step"><div class="step-dot"></div>T4: Por definir</div>
+      <div class="progress-step done"><div class="step-dot"></div>T1: Yacimientos Minerales</div>
+      <div class="progress-step done"><div class="step-dot"></div>T3: Por asignar</div>
+      <div class="progress-step done"><div class="step-dot"></div>T4: Por asignar</div>
     </div>
   </div>
 </div>
@@ -291,7 +291,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 40p
       <div class="project-num">PUNTO 04</div>
       <div class="project-title">Mapa de Minas Importantes del Perú</div>
       <div class="project-desc">Mapa interactivo en ArcGIS con ubicación, yacimiento y minerales de cada mina.</div>
-      <span class="project-tag pending">En proceso</span>
+      <span class="project-tag">Completado</span>
     </div>
   </div>
 </section>
@@ -434,11 +434,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 40p
   <div class="section-label">// Punto 04</div>
   <div class="section-title">Mapa de Minas Importantes del Perú</div>
   <p class="section-desc">Ubicación georreferenciada con nombre, yacimiento y minerales de cada mina principal.</p>
-  <div class="map-placeholder" id="mapContainer">
-    <div class="map-icon">🗺️</div>
-    <h3 style="font-size:20px;font-weight:600;margin-bottom:8px">Mapa ArcGIS — En proceso</h3>
-    <p style="color:var(--text2);font-size:14px">El mapa interactivo será embebido aquí cuando esté publicado en ArcGIS Online.</p>
-    <span class="map-badge">ArcGIS Online · Próximamente</span>
+  <div style="border:1px solid var(--border);border-radius:16px;overflow:hidden">
+    <iframe src="https://arcg.is/1LLGDW4" width="100%" height="620" frameborder="0" allowfullscreen allow="geolocation"></iframe>
+  </div>
+  <div style="margin-top:12px;display:flex;align-items:center;gap:8px">
+    <span style="font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace">// Mapa interactivo — haz clic en cada mina para ver su nombre, yacimiento y minerales</span>
+    <a href="https://arcg.is/1LLGDW4" target="_blank" style="margin-left:auto;padding:5px 14px;background:var(--blue-dim);border:1px solid #1d4ed8;color:#93c5fd;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none">Abrir en ArcGIS ↗</a>
   </div>
 </section>
 
